@@ -1,0 +1,22 @@
+[
+    {
+        "category": "Motor",
+        "title": "Продаю машину",
+        "price":"150000"
+    },
+    {
+        "category": "Audio",
+        "title": "Продаю наушники",
+        "price":"250"
+    },
+    {
+        "category": "Sport",
+        "title": "Гантель 10кг",
+        "price":"1500"
+    },
+    {
+        "category": "Furniture",
+        "title": "Стулья 2шт",
+        "price":"3500"
+    }
+]

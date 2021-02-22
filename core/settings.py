@@ -113,7 +113,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-FIXTURE_DIR = 'D:/Projects/bazar/backend/fixtures'
+FIXTURE_DIR = 'D:/Projects/bazar/fixtures'
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [

@@ -32,4 +32,6 @@ class PostAdmin(admin.ModelAdmin):
         'image_tag',
         'title',
         'price',
+        'description',
+        'city'
     ]

@@ -1,52 +1,55 @@
 import React, { Component } from 'react';
-import { render } from "react-dom";
+import { Grid, Container, Typography } from '@material-ui/core';
 
-class App extends Component {
+import AppBar from './AppBar'
+import Posts from './Posts'
+import FavouritePosts from './FavouritePosts'
+ 
+
+export default class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      data: [],
-      loaded: false,
-      placeholder: "Loading"
-    };
   }
 
-  componentDidMount() {
-    fetch("api/city-list")
-      .then(response => {
-        if (response.status > 400) {
-          return this.setState(() => {
-            return { placeholder: "Something went wrong!" };
-          });
-        }
-        return response.json();
-      })
-      .then(data => {
-        this.setState(() => {
-          return {
-            data,
-            loaded: true
-          };
-        });
-      });
-  }
 
   render() {
     return (
-      <ul>
-        {this.state.data.map(city => {
-          return (
-            <li key={city.id}>
-              {city.name}
-            </li>
-          );
-        })}
-      </ul>
+      <div>
+        <Container className='container'>
+          <div className="container">
+
+            <AppBar />
+
+          </div>
+          <Grid container
+            direction="row"
+            justify="flex-start"
+            alignItems="flex-start"
+            spacing={5}>
+            <Grid item xs={12} md={8}>
+              <div className="container">
+                <Typography variant="h5" component="h5">
+                  Все объявления
+                </Typography>
+              </div>
+
+              <Posts />
+
+            </Grid>
+            <Grid item xs={12} md={4}>
+              <div className="container">
+                <Typography variant="h5" component="h5">
+                  Избранные объявления
+                </Typography>
+              </div>
+
+              <FavouritePosts />
+
+            </Grid>
+          </Grid>
+        </Container>
+
+      </div >
     );
   }
 }
-
-export default App;
-
-const container = document.getElementById("app");
-render(<App />, container);

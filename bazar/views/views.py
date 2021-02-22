@@ -6,7 +6,7 @@ from django.shortcuts import render
 def apiOverview(request):
     api_urls = {
         'City list': '/city-list',
-        'Account list': '/account-list',
+        'Account list': '/user-list',
         'Post list': '/post-list',
 
         'Create account': 'account-create',

@@ -1,1 +1,1 @@
-.\env\Scripts\activate && cd backend && python manage.py runserver
+.\env\Scripts\activate && python manage.py runserver

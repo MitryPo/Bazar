@@ -10,14 +10,7 @@ export default class App extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			data: [],
-			activeItem: {
-				id: null,
-				title: '',
-				description: '',
-				image: '',
-				city: '',
-			}
+			data: []
 		}
 		this.componentDidMount = this.componentDidMount.bind(this)
 	}
@@ -57,7 +50,7 @@ export default class App extends Component {
 					return (
 						<Grid item xs={9} sm={3} key={index}>
 							<Card elevation={3}>
-								<CardActionArea href="">
+								<CardActionArea href={'api/post/${post.id}/'}>
 									<CardMedia
 										component="img"
 										alt="Contemplative Reptile"

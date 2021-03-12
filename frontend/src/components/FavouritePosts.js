@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import {Grid, Card, Typography, CardMedia,
-  			CardContent, CardActionArea} from '@material-ui/core';
+import {
+	Grid, Card, Typography, CardMedia,
+	CardContent, CardActionArea, Checkbox, FormControlLabel
+} from '@material-ui/core';
 import FavoriteIcon from '@material-ui/icons/Favorite';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 
 
 
@@ -34,12 +38,12 @@ export default class FavouritePosts extends Component {
 									<CardMedia
 										component="img"
 										alt="Contemplative Reptile"
-										height="150"
+										height="100"
 										image="media/product_images/601e5c55e308d468692fe230-1.jpg"
 										title="Contemplative Reptile"
 									/>
 								</Grid>
-								<Grid item xs={12} md={7}>
+								<Grid item xs={12} md={6}>
 									<CardContent>
 										<Typography variant="h6" component="h6">
 											100 Р
@@ -50,7 +54,12 @@ export default class FavouritePosts extends Component {
 									</CardContent>
 								</Grid>
 								<Grid item xs>
-									<FavoriteIcon color="secondary" />
+									<FormControlLabel
+										control={<Checkbox
+											icon={<FavoriteBorder />}
+											checkedIcon={<Favorite />}
+										/>}
+									/>
 								</Grid>
 							</Grid>
 						</CardActionArea>
@@ -70,12 +79,12 @@ export default class FavouritePosts extends Component {
 									<CardMedia
 										component="img"
 										alt="Contemplative Reptile"
-										height="150"
+										height="100"
 										image="media/product_images/60200dd0.jpg"
 										title="Contemplative Reptile"
 									/>
 								</Grid>
-								<Grid item xs={12} md={7}>
+								<Grid item xs={12} md={6}>
 									<CardContent>
 										<Typography variant="h6" component="h6">
 											200 Р
@@ -86,7 +95,12 @@ export default class FavouritePosts extends Component {
 									</CardContent>
 								</Grid>
 								<Grid item xs>
-									<FavoriteIcon color="secondary" />
+									<FormControlLabel
+										control={<Checkbox
+											icon={<FavoriteBorder />}
+											checkedIcon={<Favorite />}
+										/>}
+									/>
 								</Grid>
 							</Grid>
 						</CardActionArea>

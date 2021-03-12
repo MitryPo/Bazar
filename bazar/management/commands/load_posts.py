@@ -11,14 +11,14 @@ class Command(BaseCommand):
         postsPath = FIXTURE_DIR+'/posts.json'
         imagePath = MEDIA_ROOT+'/product_images/**.jpg'
         Post.objects.all().delete()
-        with open(postsPath, 'r') as f:
+        with open(postsPath, 'r', encoding='utf-8') as f:
             tmpstr = f.read()
             data = json.loads(tmpstr)
         for i in range(5):
             for item in data:
                 post = Post()
-                post.city = City.objects.get(id=random.randint(1,8))
-                post.category = Category.objects.get(id=random.randint(1,8))
+                post.city = City.objects.get(id=random.randint(1,11))
+                post.category = Category.objects.get(id=random.randint(1,10))
                 post.price = random.randrange(start=150, stop=15000, step=50)
                 post.title = item['title']
                 post.description = item['description']

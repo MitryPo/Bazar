@@ -11,7 +11,7 @@ class Command(BaseCommand):
         print('Loading users...')
         path = FIXTURE_DIR+'/users.json'
         UserProfile.objects.all().delete()
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             tmpstr = f.read()
             data = json.loads(tmpstr)
 

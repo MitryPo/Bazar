@@ -13,17 +13,17 @@ export default class App extends Component {
 			data: []
 		}
 		this.componentDidMount = this.componentDidMount.bind(this)
-		this.handleCategoryChange = this.handleCategoryChange.bind(this)
+		this.handleCityChange = this.handleCityChange.bind(this)
 	}
 
-	handleCategoryChange(e) {
+	handleCityChange(e) {
 		this.setState({
-			category: e.target.value,
+			city: e.target.value,
 		});
 	}
 
 	componentDidMount() {
-        fetch("api/category-list")
+        fetch("api/city-list")
             .then(response => response.json())
             .then(data =>
                 this.setState({
@@ -34,26 +34,26 @@ export default class App extends Component {
 
 
 	render() {
-		var categories = this.state.data
+		var cities = this.state.data
 		var self = this
 		return (
 				<FormControl
 					className="form-control"
 					variant="outlined"
 					size='small'>
-					<InputLabel id="select-outlined-label">Выберите категорию</InputLabel>
+					<InputLabel id="select-outlined-label">Укажите местоположение</InputLabel>
 
 					<Select
 						labelId="select-outlined-label"
-						onChange={this.handleCategoryChange}
+						onChange={this.handleCityChange}
 						label="Местоположение"
 					>
-						{categories.map(function (category) {
+						{cities.map(function (city) {
 							return (
 								<MenuItem
 									className='menuCategory'
-									value={category.id}
-								>{category.name}
+									value={city.id}
+								>{city.name}
 								</MenuItem>
 							)
 						})}

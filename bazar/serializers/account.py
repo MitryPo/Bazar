@@ -1,4 +1,4 @@
-from ..models import UserProfile
+from bazar.models import UserProfile
 from rest_framework import serializers
 
 class UserProfileSerializer(serializers.ModelSerializer):

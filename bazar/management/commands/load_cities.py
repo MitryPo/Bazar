@@ -9,7 +9,7 @@ class Command(BaseCommand):
         print('Loading cities...')
         path = FIXTURE_DIR+'/cities.txt'
         City.objects.all().delete()
-        with open(path, 'r') as f:
+        with open(path, 'r', encoding='utf-8') as f:
             for line in f:
                 c = City()
                 c.name = line

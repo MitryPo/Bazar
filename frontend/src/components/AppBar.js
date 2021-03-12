@@ -5,6 +5,7 @@ import {
 } from '@material-ui/core';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import DehazeIcon from '@material-ui/icons/Dehaze';
+import { Link } from 'react-router-dom';
 
 
 export default class AppBar extends Component {
@@ -12,10 +13,6 @@ export default class AppBar extends Component {
 		super(props);
 		this.state = {
 			data: [],
-			activeItem: {
-				id: null,
-				name: '',
-			}
 		}
 		this.componentDidMount = this.componentDidMount.bind(this)
 	}
@@ -33,14 +30,11 @@ export default class AppBar extends Component {
 			.then(data => {
 				this.setState(() => {
 					return {
-						data,
-						loaded: true
+						data
 					}
 				})
 			})
 	}
-
-
 
 	render() {
 		var categories = this.state.data
@@ -70,7 +64,13 @@ export default class AppBar extends Component {
 								<Menu {...bindMenu(popupState)}>
 									{categories.map(function (category, index) {
 										return (
-											<MenuItem onClick={popupState.close} key={index}>{category.name}</MenuItem>
+											<MenuItem
+												className='menuCategory'
+												onClick={popupState.filterPosts}
+												key={index}
+											>
+												{category.name}
+											</MenuItem>
 										)
 									})}
 								</Menu>
@@ -93,6 +93,7 @@ export default class AppBar extends Component {
 						variant="contained"
 						color="primary"
 						fullWidth
+						href={'create-post'}
 					>Добавить объявление
               </Button>
 				</Grid>

@@ -2,6 +2,8 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import render
 
+
+
 @api_view(['get'])
 def apiOverview(request):
     api_urls = {
@@ -13,9 +15,9 @@ def apiOverview(request):
         'Update account': 'account-update/<str:pk>',
         'Delete account': 'account-delete/<str:pk>',
 
-        'Create product post': '/sell-product',
-        'Update product post': '/update-product/<str:pk>',
-        'Delete product post': '/delete-product/<str:pk>'
+        'Create product post': '/create-post',
+        'Update product post': '/update-post/<str:pk>',
+        'Delete product post': '/delete-post/<str:pk>'
 
     }
     return Response(api_urls)

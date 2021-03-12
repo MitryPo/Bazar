@@ -1,21 +1,21 @@
 [
     {
-        "username": "Dmitry",
+        "username": "Димчик",
         "password": "qwerty",
         "phone":"+79888352505"
     },
     {
-        "username": "Ivan",
+        "username": "Ванек",
         "password": "qwe123",
         "phone":"+79888352505"
     },
     {
-        "username": "Slava",
+        "username": "Славик",
         "password": "qwerty",
         "phone":"+79518352505"
     },
     {
-        "username": "Maksim",
+        "username": "Макс",
         "password": "qwe123",
         "phone":"+79998352505"
     }

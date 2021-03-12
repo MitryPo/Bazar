@@ -1,11 +1,11 @@
-Penza
-Lomov
-Spassk
-Kuznetsk
-Lunino
-Kamenka
-Belinsky
-Vadinsk
-Serdobsk
-Kolyshley
-Serdoba
+Пенза
+Нижний Ломов
+Спасск
+Кузнецк
+Лунино
+Каменка
+Белинский
+Вадинск
+Сердобск
+Колышлей
+Малая сердоба

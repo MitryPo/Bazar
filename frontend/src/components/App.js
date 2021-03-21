@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Switch, Route, Link, Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, Link, Redirect, useParams } from 'react-router-dom'
 import HomePage from "./HomePage"
 import CreatePost from "./CreatePost"
 import PostDetail from "./PostDetail"
+import FilterPosts from "./FilterPosts"
 
 
 export default class App extends Component {
@@ -16,8 +17,9 @@ export default class App extends Component {
         <Router>
           <Switch>
             <Route exact path='/' component={HomePage} />
-            <Route path='/create-post' component={CreatePost} />
-            <Route path='/post/<int:pk>' component={CreatePost} />
+            <Route exact path='/product-create' component={CreatePost} />
+            <Route exact path='/product/:id' component={PostDetail} />
+            <Route exact path='/category/:id' component={FilterPosts} />
           </Switch>
         </Router>
     );

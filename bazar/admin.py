@@ -7,7 +7,9 @@ from django.contrib.auth.admin import UserAdmin
 
 @admin.register(City)
 class CityAdmin(admin.ModelAdmin):
-    list_display = ['name']
+    list_display = [
+        'name',
+        ]
 
 
 @admin.register(UserProfile)
@@ -16,8 +18,10 @@ class UserProfileAdmin(admin.ModelAdmin):
         'username',
         'is_online',
         'balance',
-        'phone'
+        'phone',
+        'city',
     ]
+
 
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
@@ -33,5 +37,6 @@ class PostAdmin(admin.ModelAdmin):
         'title',
         'price',
         'description',
+        'sold',
         'city'
     ]

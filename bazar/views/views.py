@@ -11,13 +11,13 @@ def apiOverview(request):
         'Account list': '/user-list',
         'Post list': '/post-list',
 
-        'Create account': 'account-create',
-        'Update account': 'account-update/<str:pk>',
-        'Delete account': 'account-delete/<str:pk>',
+        'Create account': 'account/create',
+        'Update account': 'account/update/<str:pk>',
+        'Delete account': 'account/delete/<str:pk>',
 
-        'Create product post': '/create-post',
-        'Update product post': '/update-post/<str:pk>',
-        'Delete product post': '/delete-post/<str:pk>'
+        'Create product post': '/product/create/',
+        'Update product post': '/product/update/<str:pk>',
+        'Delete product post': '/product/delete/<str:pk>'
 
     }
     return Response(api_urls)

@@ -1,269 +1,277 @@
+import { Button, Col, Form, PageHeader, Input, InputNumber, message, Row, Select, Steps } from 'antd';
+import axios from 'axios';
 import React, { Component } from 'react';
-import {
-	Button, InputLabel, MenuItem, Select, Grid, Typography,
-	FormControlLabel, TextField, FormControl,
-	FormHelperText, Radio, RadioGroup, Container
-} from '@material-ui/core';
-import Cities from './Cities'
-import Categories from './Categories'
-import { Link } from 'react-router-dom'
-import axios from 'axios'
+
+
 
 
 
 export default class CreatePostPage extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			cityList: [],
-			categoryList: []
-		};
-		this.handleCreateButtonPressed = this.handleCreateButtonPressed.bind(this)
-		this.handleCategoryChange = this.handleCategoryChange.bind(this)
-		this.handleTitleChange = this.handleTitleChange.bind(this)
-		this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
-		this.handleImageChange = this.handleImageChange.bind(this)
-		this.handlePriceChange = this.handlePriceChange.bind(this)
-		this.handleCityChange = this.handleCityChange.bind(this)
-		this.getCookie = this.getCookie.bind(this)
-		this.fetchCategories = this.fetchCategories.bind(this)
-		this.fetchCities = this.fetchCities.bind(this)
-	}
+  constructor(props) {
+    super(props);
+    this.state = {
+      cityList: [],
+      categoryList: [],
+      uploading: false
+    };
+    this.handleFinish = this.handleFinish.bind(this)
+    this.handleCategoryChange = this.handleCategoryChange.bind(this)
+    this.handleTitleChange = this.handleTitleChange.bind(this)
+    this.handleDescriptionChange = this.handleDescriptionChange.bind(this)
+    this.handleImageChange = this.handleImageChange.bind(this)
+    this.handlePriceChange = this.handlePriceChange.bind(this)
+    this.handleCityChange = this.handleCityChange.bind(this)
+    this.getCookie = this.getCookie.bind(this)
+    this.fetchCategories = this.fetchCategories.bind(this)
+    this.fetchCities = this.fetchCities.bind(this)
+    this.handleChange = this.handleChange.bind(this)
+
+  }
 
 
-	getCookie(name) {
-		var cookieValue = null;
-		if (document.cookie && document.cookie !== '') {
-			var cookies = document.cookie.split(';');
-			for (var i = 0; i < cookies.length; i++) {
-				var cookie = cookies[i].trim();
-				// Does this cookie string begin with the name we want?
-				if (cookie.substring(0, name.length + 1) === (name + '=')) {
-					cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-					break;
-				}
-			}
-		}
-		return cookieValue;
-	}
+  getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+        var cookie = cookies[i].trim();
+        // Does this cookie string begin with the name we want?
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
+      }
+    }
+    return cookieValue;
+  }
 
-	handleCategoryChange(e) {
-		this.setState({
-			category: e.target.value,
-		});
-	}
-	handleTitleChange(e) {
-		this.setState({
-			title: e.target.value,
-		});
-	}
-	handleDescriptionChange(e) {
-		this.setState({
-			description: e.target.value,
-		});
-	}
-	handleImageChange(e) {
-		this.setState({
-			image: e.target.files[0],
-		});
-		console.log(e.target.files)
-	}
-	handlePriceChange(e) {
-		this.setState({
-			price: e.target.value,
-		});
-	}
-	handleCityChange(e) {
-		this.setState({
-			city: e.target.value,
-		});
-	}
-	fetchCategories(){
-		fetch("api/category-list")
-			.then(response => response.json())
-			.then(data =>
-				this.setState({
-					categoryList:data
-				})
-			)
-		}
-	fetchCities(){		
-		fetch("api/city-list")
-			.then(response => response.json())
-			.then(data =>
-				this.setState({
-					cityList:data
-				})
-			)
-	}
+  handleCategoryChange(e) {
+    this.setState({
+      category: e.target.value,
+    });
+  }
+  handleTitleChange(e) {
+    this.setState({
+      title: e.target.value,
+    });
+  }
+  handleDescriptionChange(e) {
+    this.setState({
+      description: e.target.value,
+    });
+  }
+  handleImageChange(e) {
+    this.setState({
+      uploading: true,
+      image: e.target.files[0],
+    });
+    console.log(e.target.files)
+  }
+  handlePriceChange(e) {
+    this.setState({
+      price: e.target.value,
+    });
+  }
+  handleCityChange(e) {
+    this.setState({
+      city: e.target.value,
+    });
+  }
+  fetchCategories() {
+    fetch('api/category-list')
+      .then(response => response.json())
+      .then(data => {
+        this.setState({
+          categoryList: data
+        })
+        console.log(data)
+      })
+  }
+  fetchCities() {
+    fetch("api/city-list")
+      .then(response => response.json())
+      .then(data =>
+        this.setState({
+          cityList: data
+        })
+      )
+  }
 
-	componentWillMount() {
-		this.fetchCategories()
-		this.fetchCities()
-	}
+  componentDidMount() {
+    this.fetchCategories()
+    this.fetchCities()
+  }
 
-	handleCreateButtonPressed() {
-		var csrftoken = this.getCookie('csrftoken')
-		const url = '/api/create-post/';
-		const formData = new FormData()
+  handleFinish() {
+    var csrftoken = this.getCookie('csrftoken')
+    const url = '/api/product-create';
+    const formData = new FormData()
 
-		formData.append('category', this.state.category);
-		formData.append('title', this.state.title);
-		formData.append('description', this.state.description);
-		formData.append('image', this.state.image, this.state.image.name);
-		formData.append('price', this.state.price);
-		formData.append('city', this.state.city);
-		axios.post(url, formData, {
-			headers: {
-				'Content-Type': 'multipart/form-data',
-				"Accept": "application/json",
-				"type": "formData",
-				'X-CSRFToken': csrftoken,
-			},
-		})
-			.then((data) => console.log(data))
-			.catch(err => console.log(err))
-	}
+    formData.append('category', this.state.category);
+    formData.append('title', this.state.title);
+    formData.append('description', this.state.description);
+    formData.append('image', this.state.image, this.state.image.name);
+    formData.append('price', this.state.price);
+    formData.append('city', this.state.city);
+    axios.post(url, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        "Accept": "application/json",
+        "type": "formData",
+        'X-CSRFToken': csrftoken,
+      },
+    })
+      .then((data) => console.log(data))
+      .catch(err => console.log(err))
+      .then(message.success('Успешно опубликовано'))
+  }
 
+  handleChange(value) {
+    console.log(`selected ${value}`);
+  }
 
-	render() {
-		var categories = this.state.categoryList
-		var cities = this.state.cityList
-		var self = this
-		return (
-			<Container className='container'>
-				<Typography variant="h5" component="h5">Разместить новое объявление</Typography>
-				<form>
-					<Grid container
-						direction="row"
-						justify="flex-start"
-						alignItems="flex-start"
-						spacing={4}
-					>
-						<Grid item xs={12} md={6}>
+  render() {
+    var categories = this.state.categoryList
+    var cities = this.state.cityList
+    const { Step } = Steps
+    return (
+      <div className='container'>
+        <Row>
 
-							<FormControl
-								className="form-control"
-								id='form-control'
-								variant="outlined"
-								size='small'
-							>
-								<InputLabel id="select-outlined-label">Выберите категорию</InputLabel>
-								<Select
-									labelId="select-outlined-label"
-									onChange={this.handleCategoryChange}
-									label="Категория"
-								>
-									{categories.map(function (category) {
-										return (
-											<MenuItem
-												className='menuCategory'
-												value={category.id}
-											>{category.name}
-											</MenuItem>
-										)
-									})}
-								</Select>
-							</FormControl>
+          <Col
+            flex
+            style={{ width: `70%` }}
+          >
+            <PageHeader
+              style={{paddingBottom: '2em'}}
+              className="site-page-header"
+              onBack={() => null}
+              title={<h2>Добавить объявление</h2>}
+              // subTitle="This is a subtitle"
+            />
+            
+            <Form
+              labelCol={{ span: 4, }}
+              wrapperCol={{ span: 14, }}
+              layout="horizontal"
+              onFinish={this.handleFinish}
+            // onFinishFailed={message.error('Произошла ошибка')}
+            >
 
-							<TextField
-								className="form-control"
-								variant="outlined"
-								required={true}
-								type='text'
-								size='small'
-								onChange={this.handleTitleChange}
-								fullWidth
-							/>
-							<FormHelperText>Название не должно превышать 50 символов</FormHelperText>
+              <Form.Item
+                label="Категория"
+                required={true}
+                onChange={this.handleCategoryChange}
+              >
+                <Select
+                  onChange={this.handleChange}
+                  defaultValue={1}
+                >
+                  {categories.map(function (category, index) {
+                    return (
+                      <Select.Option
+                        key={index}
+                        value={category.id}
+                      >{category.name}
+                      </Select.Option>
+                    )
+                  })}
+                </Select>
+              </Form.Item>
 
-							<TextField
+              <Form.Item
+                label="Название продукта"
+                required={true}
+                onChange={this.handleTitleChange}
+              >
+                <Input
+                  maxLength={50}
+                />
+              </Form.Item>
 
-								className="form-control"
-								variant="outlined"
-								required={true}
-								type='text'
-								multiline
-								rows={4}
-								onChange={this.handleDescriptionChange}
-								fullWidth
-							/>
-							<FormHelperText
-							>Описание не должно превышать 3000 символов</FormHelperText>
+              <Form.Item
+                label="Описание продукта"
+                onChange={this.handleDescriptionChange}
+              >
+                <Input.TextArea
+                  showCount
+                  maxLength={3000}
+                  rows={5}
+                />
+              </Form.Item>
 
-							<TextField
-								className="form-control"
-								variant="outlined"
-								size='small'
-								required={true}
-								type='number'
-								onChange={this.handlePriceChange}
-								inputProps={{
-									min: 1
-								}}
-							/>
-							<FormHelperText>Цена</FormHelperText>
-							<div className='container'>
-								<input
-									accept="image/*"
-									id="button-file"
-									onChange={this.handleImageChange}
-									multiple
-									type="file"
-								/>
+              <Form.Item
+                label="Цена"
+                required={true}
+                onChange={this.handlePriceChange}
+              >
+                <InputNumber /> Р
+							</Form.Item>
 
-								{/* <label htmlFor="button-file">
-									<Button 
-									variant="outlined"
-									color="primary" 
-									component="span"
-									size="small">
-										Загрузить фото
-        				</Button>
-								</label> */}
-							</div>
+              <Form.Item
+                label="Фото продукта"
+              // required={true}
 
-							<FormControl
-								className="form-control"
-								id='form-control'
-								variant="outlined"
-								size='small'
-							>
-								<InputLabel id="select-outlined-label">Укажите местоположение</InputLabel>
-								<Select
-									labelId="select-outlined-label"
-									onChange={this.handleCityChange}
-									label="Категория"
-								>
-									{cities.map(function (city) {
-										return (
-											<MenuItem
-												className='menuCategory'
-												value={city.id}
-											>{city.name}
-											</MenuItem>
-										)
-									})}
-								</Select>
-							</FormControl>
+              >
+                <input
+                  accept="image/*"
+                  id="button-file"
+                  onChange={this.handleImageChange}
+                  type="file"
+                />
+              </Form.Item>
 
-							<div style={{ marginTop: 15 }}>
-								<Button
-									color='primary'
-									variant='contained'
-									onClick={this.handleCreateButtonPressed}
-								>Создать объявление
-        					</Button>
-							</div>
-						</Grid>
+              <Form.Item
+                label="Местоположение"
+                required={true}
+                onChange={this.handleCityChange}
+              >
+                <Select
+                  onChange={this.handleChange}
+                  defaultValue={1}
+                >
+                  {cities.map(function (city, index) {
+                    return (
+                      <Select.Option
+                        key={index}
+                        value={city.id}
+                      >{city.name}
+                      </Select.Option>
+                    )
+                  })}
+                </Select>
+              </Form.Item>
 
-						<Grid item xs>
-							<Typography>Объявление</Typography>
+              <Form.Item
+                wrapperCol={{ offset: 4 }}
+              >
+                <Button
+                  type="primary"
+                  htmlType="submit"
+                >
+                  Опубликовать
+        			</Button>
+              </Form.Item>
 
-						</Grid>
-					</Grid>
-				</form>
-			</Container>
-		)
-	}
+            </Form>
+          </Col>
+
+          <Col
+            style={{ width: `30%` }}
+          >
+            <div style={{ paddingTop: '6rem' }}>
+              <Steps direction="vertical" size="small" current={1}>
+                <Step title="Категория" />
+                <Step title="Название и описание" />
+                <Step title="Цена" />
+                <Step title="Фото" />
+                <Step title="Местоположение" />
+              </Steps>
+            </div>
+          </Col>
+
+        </Row>
+      </div>
+    )
+  }
 }

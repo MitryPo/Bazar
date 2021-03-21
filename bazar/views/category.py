@@ -8,3 +8,10 @@ class CategoryListView(generics.ListAPIView):
     
     serializer_class = CategorySerializer
     queryset = Category.objects.all().order_by('id')
+
+
+class CategoryDetailView(generics.RetrieveAPIView):
+    '''Category Detail View'''
+    
+    serializer_class = CategorySerializer
+    queryset = Category.objects.all().order_by('id')

@@ -6,7 +6,6 @@ from core.settings import FIXTURE_DIR
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        print('Loading cities...')
         path = FIXTURE_DIR+'/cities.txt'
         City.objects.all().delete()
         with open(path, 'r', encoding='utf-8') as f:
@@ -14,3 +13,4 @@ class Command(BaseCommand):
                 c = City()
                 c.name = line
                 c.save()
+        print('Cities have been loaded...')        

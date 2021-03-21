@@ -45,12 +45,12 @@ export default class FavouritePosts extends Component {
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<CardContent>
-										<Typography variant="h6" component="h6">
+										<h2>
 											100 Р
-                            </Typography>
-										<Typography gutterBottom variant="body2" component="p">
+                            			</h2>
+										<Typography variant="subtitle2" component='p' >
 											Объявление 1
-                            </Typography>
+                						</Typography>
 									</CardContent>
 								</Grid>
 								<Grid item xs>
@@ -86,12 +86,12 @@ export default class FavouritePosts extends Component {
 								</Grid>
 								<Grid item xs={12} md={6}>
 									<CardContent>
-										<Typography variant="h6" component="h6">
+										<h2>
 											200 Р
-                                        </Typography>
-										<Typography gutterBottom variant="body2" component="p">
+                            			</h2>
+										<Typography variant="subtitle2" component='p' >
 											Объявление 2
-                                        </Typography>
+                						</Typography>
 									</CardContent>
 								</Grid>
 								<Grid item xs>

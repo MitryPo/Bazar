@@ -1,4 +1,4 @@
-from bazar.models import Post, category
+from bazar.models import Post
 from bazar.serializers import PostListSerializer, PostCRUDSerializer
 
 from rest_framework import generics
@@ -11,7 +11,7 @@ class PostListView(generics.ListAPIView):
     filter_backends = (DjangoFilterBackend,)
     filter_fields = ('category',)
     serializer_class = PostListSerializer
-    queryset = Post.objects.all().order_by('-id')
+    queryset = Post.objects.all().order_by('-date_created')
 
 
 class PostCreateView(generics.CreateAPIView):
@@ -24,4 +24,4 @@ class PostDetailView(generics.RetrieveUpdateDestroyAPIView):
     '''Post Update/Delete & Detail View'''
 
     serializer_class = PostListSerializer
-    queryset = Post.objects.all()
+    queryset = Post.objects.all().order_by('-date_created')

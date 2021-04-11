@@ -1,3 +1,4 @@
+from bazar.models import city
 from ..models import City
 from rest_framework import serializers
 

@@ -14,4 +14,5 @@ class CategoryDetailView(generics.RetrieveAPIView):
     '''Category Detail View'''
     
     serializer_class = CategorySerializer
+    lookup_field='slug'
     queryset = Category.objects.all().order_by('id')

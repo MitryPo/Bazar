@@ -11,6 +11,6 @@ class Command(BaseCommand):
         with open(path, 'r', encoding='utf-8') as f:
             for line in f:
                 c = Category()
-                c.name = line
+                c.name = (line).strip('\n')
                 c.save()
         print('Categories have been loaded...')

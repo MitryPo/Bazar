@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User
-from .models import City, UserProfile, Post, Category
+from .models import City, UserProfile, Post, Category, SubCategory
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
@@ -19,7 +19,6 @@ class UserProfileAdmin(admin.ModelAdmin):
         'is_online',
         'balance',
         'phone',
-        'city',
     ]
 
 
@@ -28,6 +27,12 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = [
         'name',
     ]
+
+@admin.register(SubCategory)
+class CityAdmin(admin.ModelAdmin):
+    list_display = [
+        'name',
+        ]
 
 
 @admin.register(Post)

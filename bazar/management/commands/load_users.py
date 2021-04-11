@@ -20,5 +20,6 @@ class Command(BaseCommand):
             user.username = item['username']
             user.phone = item['phone']
             user.set_password(item['password'])
+            user.balance = item['balance']
             user.save()
             print(item)

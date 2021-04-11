@@ -1,9 +1,8 @@
-import { Button, Col, Form, PageHeader, Input, InputNumber, message, Row, Select, Steps } from 'antd';
-import axios from 'axios';
 import React, { Component } from 'react';
-
-
-
+import { useHistory } from 'react-router-dom';
+import axios from 'axios';
+import { Button, Upload, Col, Form, PageHeader, Input, InputNumber, message, Row, Select, Steps } from 'antd';
+import { UploadOutlined } from '@ant-design/icons';
 
 
 export default class CreatePostPage extends Component {
@@ -21,11 +20,9 @@ export default class CreatePostPage extends Component {
     this.handleImageChange = this.handleImageChange.bind(this)
     this.handlePriceChange = this.handlePriceChange.bind(this)
     this.handleCityChange = this.handleCityChange.bind(this)
-    this.getCookie = this.getCookie.bind(this)
     this.fetchCategories = this.fetchCategories.bind(this)
     this.fetchCities = this.fetchCities.bind(this)
     this.handleChange = this.handleChange.bind(this)
-
   }
 
 
@@ -67,6 +64,7 @@ export default class CreatePostPage extends Component {
     });
     console.log(e.target.files)
   }
+
   handlePriceChange(e) {
     this.setState({
       price: e.target.value,
@@ -78,23 +76,24 @@ export default class CreatePostPage extends Component {
     });
   }
   fetchCategories() {
-    fetch('api/category-list')
+    fetch('/api/category/all')
       .then(response => response.json())
       .then(data => {
         this.setState({
           categoryList: data
         })
-        console.log(data)
+        // console.log(data)
       })
   }
   fetchCities() {
-    fetch("api/city-list")
+    fetch("/api/city-list")
       .then(response => response.json())
-      .then(data =>
+      .then(data => {
         this.setState({
           cityList: data
         })
-      )
+        // console.log(data)
+      })
   }
 
   componentDidMount() {
@@ -104,7 +103,7 @@ export default class CreatePostPage extends Component {
 
   handleFinish() {
     var csrftoken = this.getCookie('csrftoken')
-    const url = '/api/product-create';
+    const url = '/api/product/create';
     const formData = new FormData()
 
     formData.append('category', this.state.category);
@@ -120,9 +119,10 @@ export default class CreatePostPage extends Component {
         "type": "formData",
         'X-CSRFToken': csrftoken,
       },
+
     })
       .then((data) => console.log(data))
-      .catch(err => console.log(err))
+      .catch(err => message.error(err))
       .then(message.success('Успешно опубликовано'))
   }
 
@@ -131,146 +131,189 @@ export default class CreatePostPage extends Component {
   }
 
   render() {
-    var categories = this.state.categoryList
-    var cities = this.state.cityList
+    const categories = this.state.categoryList
+    let uploading = this.state.uploading
+    const cities = this.state.cityList
+    const token = localStorage.getItem('access_token')
     const { Step } = Steps
+
     return (
       <div className='container'>
-        <Row>
 
-          <Col
-            flex
-            style={{ width: `70%` }}
-          >
-            <PageHeader
-              style={{paddingBottom: '2em'}}
-              className="site-page-header"
-              onBack={() => null}
-              title={<h2>Добавить объявление</h2>}
-              // subTitle="This is a subtitle"
-            />
-            
-            <Form
-              labelCol={{ span: 4, }}
-              wrapperCol={{ span: 14, }}
-              layout="horizontal"
-              onFinish={this.handleFinish}
-            // onFinishFailed={message.error('Произошла ошибка')}
-            >
+        {
 
-              <Form.Item
-                label="Категория"
-                required={true}
-                onChange={this.handleCategoryChange}
+          token !== null ?
+
+            <Row>
+
+              <Col
+                flex
+                style={{ width: `80%` }}
               >
-                <Select
-                  onChange={this.handleChange}
-                  defaultValue={1}
+                <PageHeader
+                  style={{ paddingBottom: '2em' }}
+                  className="site-page-header"
+                  onBack={() => null}
+                  title={<h2>Добавить объявление</h2>}
+                // subTitle="This is a subtitle"
+                />
+
+                <Form
+                  labelCol={{ span: 4, }}
+                  wrapperCol={{ span: 12, }}
+                  layout="horizontal"
+                  onFinish={this.handleFinish}
+                // onFinishFailed={message.error('Произошла ошибка')}
                 >
-                  {categories.map(function (category, index) {
-                    return (
-                      <Select.Option
-                        key={index}
-                        value={category.id}
-                      >{category.name}
-                      </Select.Option>
-                    )
-                  })}
-                </Select>
-              </Form.Item>
 
-              <Form.Item
-                label="Название продукта"
-                required={true}
-                onChange={this.handleTitleChange}
-              >
-                <Input
-                  maxLength={50}
-                />
-              </Form.Item>
+                  <Form.Item
+                    name='category'
+                    label="Категория"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Пожалуйста выберите категорию',
+                      },
+                    ]}
+                    onChange={this.handleCategoryChange}
+                  >
+                    <Select
+                      // className='ant-select'
+                      onChange={this.handleChange}
+                      allowClear
+                      placeholder='Выберите категорию'
+                    >
+                      {categories.map(function (category, index) {
+                        return (
+                          <Select.Option
+                            // className='ant-select-selection-item'
+                            key={index}
+                            value={category.id}
+                          >{category.name}
+                          </Select.Option >
+                        )
+                      })}
+                    </Select>
+                  </Form.Item>
 
-              <Form.Item
-                label="Описание продукта"
-                onChange={this.handleDescriptionChange}
-              >
-                <Input.TextArea
-                  showCount
-                  maxLength={3000}
-                  rows={5}
-                />
-              </Form.Item>
+                  <Form.Item
+                    name='title'
+                    label="Название продукта"
+                    extra='Название должно быть не более 50 символов'
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Пожалуйста укажите название',
+                      },
+                    ]}
+                    onChange={this.handleTitleChange}
+                  >
+                    <Input
+                      maxLength={50}
+                    />
+                  </Form.Item>
 
-              <Form.Item
-                label="Цена"
-                required={true}
-                onChange={this.handlePriceChange}
-              >
-                <InputNumber /> Р
+                  <Form.Item
+                    label="Описание продукта"
+                    extra='Описание должно быть не более 3000 символов'
+                    onChange={this.handleDescriptionChange}
+                  >
+                    <Input.TextArea
+                      showCount
+                      maxLength={3000}
+                      rows={5}
+                    />
+                  </Form.Item>
+
+                  <Form.Item
+                    label="Цена"
+                    onChange={this.handlePriceChange}
+                  >
+                    <InputNumber
+                      type='number'
+                    /> Р
 							</Form.Item>
 
-              <Form.Item
-                label="Фото продукта"
-              // required={true}
+                  <Form.Item
+                    label="Фото продукта"
+                    extra='Не более 5 фото'
+                    onChange={this.handleImageChange}
+                  >
+                    <Upload
+                      listType="picture"
+                      type='file'
+                      accept="image/jpg, image/png, image/jpeg"
+                      beforeUpload={() => false}
+                      maxCount={5}
+                    >
+                      <Button icon={<UploadOutlined />}>Загрузить фото</Button>
+                    </Upload>
 
-              >
-                <input
-                  accept="image/*"
-                  id="button-file"
-                  onChange={this.handleImageChange}
-                  type="file"
-                />
-              </Form.Item>
+                  </Form.Item>
 
-              <Form.Item
-                label="Местоположение"
-                required={true}
-                onChange={this.handleCityChange}
-              >
-                <Select
-                  onChange={this.handleChange}
-                  defaultValue={1}
-                >
-                  {cities.map(function (city, index) {
-                    return (
-                      <Select.Option
-                        key={index}
-                        value={city.id}
-                      >{city.name}
-                      </Select.Option>
-                    )
-                  })}
-                </Select>
-              </Form.Item>
+                  <Form.Item
+                    name='location'
+                    label="Местоположение"
+                    rules={[
+                      {
+                        required: true,
+                        message: 'Пожалуйста укажите местоположение',
+                      },
+                    ]}
+                    onChange={this.handleCityChange}
+                  >
+                    <Select
+                      className='ant-select'
+                      onChange={this.handleChange}
+                      placeholder='Выберите местоположение'
+                      allowClear
+                    >
+                      {cities.map(function (city, index) {
+                        return (
+                          <Select.Option
+                            // className='ant-select-selection-item'
+                            key={index}
+                            value={city.id}
+                          >{city.name}
+                          </Select.Option>
+                        )
+                      })}
+                    </Select>
+                  </Form.Item>
 
-              <Form.Item
-                wrapperCol={{ offset: 4 }}
-              >
-                <Button
-                  type="primary"
-                  htmlType="submit"
-                >
-                  Опубликовать
+                  <Form.Item
+                    wrapperCol={{ offset: 4 }}
+                  >
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                    >
+                      Опубликовать
         			</Button>
-              </Form.Item>
+                  </Form.Item>
 
-            </Form>
-          </Col>
+                </Form>
+              </Col>
 
-          <Col
-            style={{ width: `30%` }}
-          >
-            <div style={{ paddingTop: '6rem' }}>
-              <Steps direction="vertical" size="small" current={1}>
-                <Step title="Категория" />
-                <Step title="Название и описание" />
-                <Step title="Цена" />
-                <Step title="Фото" />
-                <Step title="Местоположение" />
-              </Steps>
-            </div>
-          </Col>
+              <Col
+                style={{ width: `20%` }}
+              >
+                <div style={{ paddingTop: '6rem' }}>
+                  <Steps direction="vertical" size="small" current={1}>
+                    <Step title="Категория" />
+                    <Step title="Название и описание" />
+                    <Step title="Цена" />
+                    <Step title="Фото" />
+                    <Step title="Местоположение" />
+                  </Steps>
+                </div>
+              </Col>
 
-        </Row>
+            </Row>
+
+            :
+            window.location.href = '/login'
+        }
       </div>
     )
   }

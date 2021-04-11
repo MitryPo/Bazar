@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Row, Col, Space } from 'antd';
 
-import AppBar from './Parts/AppBar'
+import AppBar from './Parts/Header'
 import Posts from './Parts/Posts'
-import FavouritePosts from './FavouritePosts'
 
 
 class FilterPosts extends Component {
@@ -48,48 +47,61 @@ class FilterPosts extends Component {
 
 	render() {
 		const { Meta } = Card;
-		const category = this.state.category
+		var category = this.state.category
 		var posts = this.state.postList
 		return (
 			<div>
 
-				<div style={{ padding: 20 }}>
+				<div>
 					<AppBar />
 				</div>
 
-				<div style={{ padding: 20 }}>
-					<Row>
-						<Col>
-							<div style={{ paddingBottom: 20 }}>
-								<h1>
-									{category.name}
-								</h1>
-							</div>
-							<Row>
-								{posts.map(function (post, index) {
-									return (
-										<Col
-											flex={5}
-											key={index}
-										>
-											<div style={{ paddingBottom: 15 }}>
+				<div className='container'>
+					<div className='container'>
+
+						<div style={{ paddingBottom: '2em' }}>
+							<h1>
+								{category.name}
+							</h1>
+						</div>
+
+						<Row justify='space-between'>
+
+							{posts.map(function (post, index) {
+								return (
+
+									<Col
+										flex={5}
+										key={index}
+									>
+										<div style={{ paddingBottom: 20 }}>
+
+											<a href={`/product/${post.id}`}>
 												<Card
 													hoverable
 													size='small'
-													style={{ maxWidth: 200 }}
-													cover={<img height={200} src={post.image}></img>}
+													style={{ maxWidth: 220 }}
+													cover={<img style={{
+														borderTopLeftRadius: 10,
+														borderTopRightRadius: 10
+													}}
+														height={200} src={post.image}></img>}
 												>
-													<Meta title={`${post.price} Р `} description={post.title} />
+													<Meta
+														title={`${post.price} Р `}
+														description={post.title}
+													/>
 												</Card>
-											</div>
-										</Col>
-									)
-								})}
-							</Row>
-						</Col>
-					</Row>
+											</a>
+										</div>
+
+									</Col>
+								)
+							})}
+						</Row>
+					</div>
 				</div>
-			</div>
+			</div >
 		)
 	}
 }

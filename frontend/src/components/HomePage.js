@@ -1,22 +1,19 @@
 import React, { Component } from 'react';
 import { Row, Affix, Col, Card, Space, Layout } from 'antd';
-import AppBar from './Parts/AppBar'
+import Header from './Parts/Header'
 import Carousel from './Parts/Carousel'
 import Posts from './Parts/Posts'
 
+
 export default class App extends Component {
-	constructor(props) {
-		super(props);
-	}
 
 	render() {
-		const { Header, Footer, Sider, Content } = Layout
 		const { Meta } = Card;
 		return (
 			<div>
 
 				<div>
-					<AppBar />
+					<Header />
 				</div>
 
 				<div>
@@ -27,7 +24,7 @@ export default class App extends Component {
 
 					<div className='container'>
 
-						<Row>
+						<Row justify='space-between'>
 							<Col
 								flex
 								style={{ width: `70%` }}

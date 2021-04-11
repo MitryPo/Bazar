@@ -1,19 +1,17 @@
-from ..models import Post
+from bazar.models import Post
 from rest_framework import serializers
-from django.db.models.fields import DateTimeField
 
 
 class PostListSerializer(serializers.ModelSerializer):
     city = serializers.SlugRelatedField(slug_field='name', read_only=True)
     category = serializers.SlugRelatedField(slug_field='name', read_only=True)
-    date_created = DateTimeField()
     class Meta:
         model = Post
-        fields = '__all__'
-
+        exclude = ['id',]
 
 class PostCRUDSerializer(serializers.ModelSerializer):
-    
+    city = serializers.SlugRelatedField(slug_field='name', read_only=True)
+    category = serializers.SlugRelatedField(slug_field='name', read_only=True)
     class Meta:
         model = Post
-        fields = '__all__'
+        exclude = ['slug', 'date_created', 'id']

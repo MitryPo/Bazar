@@ -9,7 +9,7 @@ def apiOverview(request):
     api_urls = {
         'City list': '/city-list',
         'Account list': '/user-list',
-        'Post list': '/post-list',
+        'Post list': '/product/all',
 
         'Create account': 'account/create',
         'Update account': 'account/update/<str:pk>',

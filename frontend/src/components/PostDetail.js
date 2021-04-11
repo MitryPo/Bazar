@@ -2,7 +2,7 @@ import React from 'react';
 import { Breadcrumb, Image, Affix, Avatar, Card, Row, Col, Button, Space } from 'antd';
 import { UserOutlined, AppstoreOutlined } from '@ant-design/icons';
 
-import AppBar from './Parts/AppBar'
+import AppBar from './Parts/Header'
 
 
 class PostDetail extends React.Component {
@@ -60,15 +60,25 @@ class PostDetail extends React.Component {
 
               <div className="container">
                 <div>
-                  <a
-                    style={{ float: 'right' }}
-                  >Добавить в избранное
-                  </a>
+                  <Row 
+                    justify='space-between'
+                    align='middle'
+                  >
 
-                  <h1>
-                    {post.title}
-                  </h1>
+                    <Col>
+                      <h1>
+                        {post.title}
+                      </h1>
+                    </Col>
 
+                    <Col>
+                      <a
+                        style={{ float: 'right' }}
+                      >Добавить в избранное
+                      </a>
+                    </Col>
+
+                  </Row>
                   <div style={{ padding: '2em 5em' }}>
                     <Image.PreviewGroup>
                       <Image
@@ -140,7 +150,7 @@ class PostDetail extends React.Component {
 
                   <div style={{ paddingBottom: '1em' }}>
                     <Button type="dashed" size='large' block>
-                      Написать продувцу
+                      Написать продавцу
                   </Button>
                   </div>
 

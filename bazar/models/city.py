@@ -12,9 +12,8 @@ class City(models.Model):
     class Meta:
         verbose_name_plural = _("Cities")
 
-
     def get_absolute_url(self):
-            return reverse("city url", kwargs={"slug": self.slug})
+        return reverse("city url", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         if not self.id:

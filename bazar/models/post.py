@@ -1,3 +1,4 @@
+from bazar.models.account import UserProfile
 from uuid import uuid4
 from django.db import models
 from django.utils.translation import gettext_lazy as _
@@ -42,6 +43,10 @@ class Post(models.Model):
                              on_delete=models.CASCADE)
 
     slug = models.SlugField(max_length=150, blank=True, unique=True)
+
+    creator = models.ManyToManyField(UserProfile,
+                                     related_name=_("Creator"),
+                                     default=None)
 
     @property
     def image_tag(self):

@@ -27,7 +27,7 @@ class SubCategory(models.Model):
 
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name=_("Category name"))
-    child = models.ManyToManyField(SubCategory, null=True, blank=True )
+    child = models.ManyToManyField(SubCategory, null=True, blank=True)
     slug = models.SlugField(max_length=150, blank=True, unique=True)
 
     class Meta:

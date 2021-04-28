@@ -1,5 +1,5 @@
 from bazar.views.account import BlacklistTokenView
-from django.urls import path
+from django.urls import path, re_path
 from bazar.views import (CityListView, UserListView, UserRegistrationView,
                          UserDetailView, UserAuthView, BlacklistTokenView,
                          PostCreateView, PostListView, PostDetailView,PostCRUDView,

@@ -5,7 +5,7 @@ import CreatePost from "./CreatePost"
 import PostDetail from "./PostDetail"
 import MyPostDetail from "./MyPostDetail"
 import FilterPosts from "./FilterPosts"
-import regist from "./regist"
+import Regist from "./Regist"
 import Login from "./Login"
 import LogOut from './LogOut'
 
@@ -14,6 +14,7 @@ class App extends Component {
 
 
   render() {
+    
     return (
         <Router>
           <Switch>
@@ -22,7 +23,7 @@ class App extends Component {
             <Route exact path='/product/:id' component={PostDetail} />
             <Route exact path='/my-product/:id' component={MyPostDetail} />
             <Route exact path='/category/:id' component={FilterPosts} />
-            <Route exact path='/registration' component={regist} />
+            <Route exact path='/registration' component={Regist} />
             <Route exact path='/login' component={Login}/>
             <Route exact path='/logout' component={LogOut}/>
           </Switch>

@@ -1,5 +1,8 @@
 import React from 'react';
-import { Breadcrumb, Image, Affix, Avatar, Card, Row, Col, Button, Space } from 'antd';
+import {
+  Breadcrumb, Image, Affix, Avatar,
+  Tag, Card, Row, Col, Button, Space, Result
+} from 'antd';
 import { UserOutlined, AppstoreOutlined } from '@ant-design/icons';
 
 import AppBar from './Parts/Header'
@@ -11,18 +14,29 @@ class PostDetail extends React.Component {
     this.state = {
       components: {}
     }
+
   }
 
   componentDidMount() {
     const id = this.props.match.params.id
     fetch(`/api/product/${id}`)
-      .then(response => response.json())
-      .then(data => {
-        this.setState({
-          components: data
-        })
-        // console.log(data)
-      })
+    .then(res => {
+      if (res.ok) {
+        return (
+          res.json()
+          .then(data => {
+            this.setState({
+              components: data
+            })
+            // console.log(data)
+          })
+        )
+      } else if(res.status === 404) {
+        return <NotFound/>
+      } else {
+        return Promise.reject('some other error: ' + res.status)
+      }
+    })
   }
 
 
@@ -60,15 +74,27 @@ class PostDetail extends React.Component {
 
               <div className="container">
                 <div>
-                  <Row 
+                  <Row
                     justify='space-between'
                     align='middle'
                   >
 
                     <Col>
-                      <h1>
-                        {post.title}
-                      </h1>
+                      <Space
+                        direction='horizontal'
+                        size='large'
+                      >
+                        <h1>
+                          {post.title}
+                        </h1>
+                        {
+                          post.sold === true ?
+
+                            <Tag color="#87d068">Продано</Tag>
+                            :
+                            <div></div>
+                        }
+                      </Space>
                     </Col>
 
                     <Col>
@@ -166,7 +192,7 @@ class PostDetail extends React.Component {
 
                       <Col style={{ paddingTop: '1em' }}>
                         <div>
-                          <p>Максим</p>
+                          <p>{post.creator}</p>
                           <p>На сайте с 12 мая 2020</p>
                         </div>
                       </Col>

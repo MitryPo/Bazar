@@ -10,5 +10,5 @@ urlpatterns = [
     path('category/<str:slug>', views.index),
     path('login', views.index),
     path('logout', views.index),
-    path('registration', views.index)
+    path('registration', views.index),
 ]

@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from bazar.models import Post
 from bazar.models.account import UserProfile
 from bazar.serializers import PostListSerializer, PostCRUDSerializer
@@ -24,7 +25,7 @@ class PostCreateView(generics.CreateAPIView):
 
     serializer_class = PostCRUDSerializer
     authentication_classes = [SessionAuthentication, BasicAuthentication]
-    # permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticated]
     
 
 class PostCRUDView(generics.RetrieveUpdateDestroyAPIView):

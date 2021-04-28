@@ -3,6 +3,7 @@ from rest_framework import serializers
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
 
+
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
@@ -27,7 +28,6 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
-            'city',
             'phone',
             'password',
             'token'
@@ -38,14 +38,14 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
 
 
 class UserAuthSerializer(serializers.Serializer):
-    phone = serializers.CharField()
+    phone = serializers.CharField(min_length=16)
     password = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True
     )
     token = serializers.CharField(max_length=256, read_only=True)
-    
+
     def validate(self, validated_data):
         phone = validated_data.get('phone', None)
         password = validated_data.get('password', None)

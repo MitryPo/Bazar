@@ -2,7 +2,6 @@ from uuid import uuid4
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from bazar.models.post import Post
 from core.settings import SIMPLE_JWT
 from datetime import datetime, timedelta
 
@@ -48,11 +47,6 @@ class UserProfile(AbstractBaseUser, PermissionsMixin):
 
     is_online = models.BooleanField(verbose_name=_("Is online"), default=False)
     is_staff = models.BooleanField(default=False)
-
-    products = models.ManyToManyField(Post,
-                                 related_name=_("Products"),
-                                 blank=True,
-                                 null=True)
 
     objects = UserManager()
 

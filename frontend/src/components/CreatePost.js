@@ -1,7 +1,10 @@
 import React, { Component } from 'react';
 import { useHistory } from 'react-router-dom';
 import axios from 'axios';
-import { Button, Upload, Col, Form, PageHeader, Input, InputNumber, message, Row, Select, Steps } from 'antd';
+import {
+  Button, Upload, Col, Modal, Form, PageHeader,
+  Input, InputNumber, message, Row, Select, Steps
+} from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 
 
@@ -101,6 +104,17 @@ export default class CreatePostPage extends Component {
     this.fetchCities()
   }
 
+  modalSuccess() {
+    Modal.success({
+      content: 'Товар успешно опубликован',
+    });
+  }
+  modalError() {
+    Modal.error({
+      content: "Произошла ошибка"
+    });
+  }
+
   handleFinish() {
     var csrftoken = this.getCookie('csrftoken')
     const url = '/api/product/create';
@@ -118,12 +132,9 @@ export default class CreatePostPage extends Component {
         "Accept": "application/json",
         "type": "formData",
         'X-CSRFToken': csrftoken,
-      },
-
+      }
     })
-      .then((data) => console.log(data))
-      .catch(err => message.error(err))
-      .then(message.success('Успешно опубликовано'))
+
   }
 
   handleChange(value) {
@@ -153,9 +164,9 @@ export default class CreatePostPage extends Component {
                 <PageHeader
                   style={{ paddingBottom: '2em' }}
                   className="site-page-header"
-                  onBack={() => null}
+                  onBack={() => history.push('/')}
                   title={<h2>Добавить объявление</h2>}
-                // subTitle="This is a subtitle"
+                  // subTitle={`Город: ${city}`}
                 />
 
                 <Form
@@ -178,16 +189,16 @@ export default class CreatePostPage extends Component {
                     onChange={this.handleCategoryChange}
                   >
                     <Select
-                      // className='ant-select'
                       onChange={this.handleChange}
+                      type='number'
                       allowClear
                       placeholder='Выберите категорию'
+                      // listHeight={250}
                     >
                       {categories.map(function (category, index) {
                         return (
                           <Select.Option
-                            // className='ant-select-selection-item'
-                            key={index}
+                            
                             value={category.id}
                           >{category.name}
                           </Select.Option >
@@ -263,15 +274,14 @@ export default class CreatePostPage extends Component {
                     onChange={this.handleCityChange}
                   >
                     <Select
-                      className='ant-select'
                       onChange={this.handleChange}
                       placeholder='Выберите местоположение'
+                      type='number'
                       allowClear
                     >
                       {cities.map(function (city, index) {
                         return (
                           <Select.Option
-                            // className='ant-select-selection-item'
                             key={index}
                             value={city.id}
                           >{city.name}

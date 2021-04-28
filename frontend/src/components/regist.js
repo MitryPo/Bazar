@@ -1,10 +1,11 @@
-import React, { useState, useEffect, Component } from 'react';
-import { Button, Col, Form, Input, PageHeader, Row, Select, Steps, message } from 'antd';
+import React, { useState, useEffect } from 'react';
+import { Form, Input, PageHeader, Button, Row, Col, Spin, Card, message } from 'antd';
 import axiosInstance from './Parts/axios'
 import { useHistory } from 'react-router-dom';
+import InputMask from "react-input-mask";
 
 
-export default function SignUp() {
+export default function Regist() {
 
 
 	const history = useHistory()
@@ -14,20 +15,6 @@ export default function SignUp() {
 	})
 
 	const [formData, updateFormData] = useState(initialFormData)
-
-	const [appState, setAppState] = useState({
-		loading: false,
-		cities: null
-	})
-	useEffect(() => {
-		setAppState({loading:true})
-		fetch('api/city-list')
-			.then((data) => data.json())
-			.then((cities) => {
-				setAppState({loading: false, cities: cities})
-			})
-		}, [setAppState])
-
 
 	const handlePhoneChange = (e) => {
 		updateFormData({
@@ -58,106 +45,147 @@ export default function SignUp() {
 			})
 	}
 
+	const { Meta } = Card
+
 	return (
-		<div className='container'>
-			<Row>
+		<div
+			className='container'
+			style={{ textAlign: 'center' }}
+		>
+			<PageHeader
+				className="site-page-header"
+				onBack={() => history.push('/')}
+				title="На главную"
+			// subTitle="This is a subtitle"
+			/>
+
+			<Row
+				justify='center'
+				style={{ marginTop: '10%' }}
+			>
 
 				<Col
-					flex
-					style={{ width: `95%` }}
+					style={{ width: 700 }}
 				>
-					<PageHeader
-						style={{ paddingBottom: '2em' }}
-						className="site-page-header"
-						onBack={() => null}
-						title={<h2>Регистрация пользователя</h2>}
-					// subTitle="This is a subtitle"
-					/>
-
-					<Form
-						labelCol={{ span: 4, }}
-						wrapperCol={{ span: 12, }}
-						layout="horizontal"
-						onFinish={handleSubmit}
-					// onFinishFailed={message.error('Произошла ошибка')}
+					<Card
+						style={{
+							width: '100%',
+							boxShadow: '0 5px 10px rgba(150,170,180,0.8)',
+						}}
 					>
+						<Row
 
-						<Form.Item
-							name='phone'
-							label="Номер телефона"
-							rules={[
-								{
-									required: true,
-									message: 'Номер телефона не может быть менее 12 символов',
-								},
-							]}
-							onChange={handlePhoneChange}
 						>
-							<Input
-								style={{ maxWidth: 200 }}
-								maxLength={16}
-								minLength={16}
-							/>
 
-						</Form.Item>
-
-						<Form.Item
-							name="password"
-							label="Пароль"
-							onChange={handlePasswordChange}
-							rules={[
-								{
-									required: true,
-									message: 'Пожалуйста введите пароль',
-								},
-							]}
-							hasFeedback
-						>
-							<Input.Password />
-						</Form.Item>
-
-						<Form.Item
-							name='confirm'
-							label="Подтверждение пароля"
-							dependencies={['password']}
-							hasFeedback
-							rules={[
-								{
-									required: true,
-									message: 'Пожалуйста подтвердите пароль',
-								},
-								({ getFieldValue }) => ({
-									validator(_, value) {
-										if (!value || getFieldValue('password') === value) {
-											return Promise.resolve();
-										}
-
-										return Promise.reject(new Error('Введеные вами пароли не совпадают!'));
-									},
-								}),
-							]}
-						>
-							<Input.Password />
-						</Form.Item>
-
-						<Form.Item
-							wrapperCol={{ offset: 4 }}
-						>
-							<Button
-								type="primary"
-								htmlType="submit"
+							<Col
+								style={{ width: '55%' }}
 							>
-							Далее
-        			</Button>
-						</Form.Item>
 
-					</Form>
+								<Meta
+									avatar={
+										<img
+											height={`100%`}
+											width={`100%`}
+											src="https://picsum.photos/1080/1400/?blur"
+										/>
+									}
+								/>
+							</Col>
+							<Col
+								style={{ width: '45%' }}
+							>
+								<Form
+									layout='vertical'
+									onFinish={handleSubmit}
+								>
+
+									<h1
+										style={{ paddingBottom: '2rem' }}
+									>Регистрация
+									</h1>
+
+									<Form.Item
+										label="Номер телефона"
+										name="phone"
+										onChange={handlePhoneChange}
+										style={{ textAlign: 'start' }}
+										rules={[
+											{
+												required: true,
+												message: 'Пожалуйста введите номер телефона',
+											},
+										]}
+									>
+										<InputMask
+											className='ant-input ant-input-lg'
+											mask="+7(999)999-99-99"
+											alwaysShowMask={true}
+										/>
+
+
+									</Form.Item>
+
+									<Form.Item
+										name="password"
+										label="Пароль"
+										onChange={handlePasswordChange}
+										rules={[
+											{
+												required: true,
+												message: 'Пожалуйста введите пароль',
+											},
+										]}
+										hasFeedback
+									>
+										<Input.Password />
+									</Form.Item>
+									
+									<Form.Item
+										name='confirm'
+										label="Подтверждение пароля"
+										dependencies={['password']}
+										hasFeedback
+										rules={[
+											{
+												required: true,
+												message: 'Пожалуйста подтвердите пароль',
+											},
+											({ getFieldValue }) => ({
+												validator(_, value) {
+													if (!value || getFieldValue('password') === value) {
+														return Promise.resolve();
+													}
+
+													return Promise.reject(new Error('Введеные вами пароли не совпадают!'));
+												},
+											}),
+										]}
+									>
+										<Input.Password />
+									</Form.Item>
+									<Form.Item>
+										<Button
+											type="primary"
+											htmlType="submit"
+											// loading={loading}
+											// onClick={handleOk}
+											size='large'
+											block
+										>Далее
+          		</Button>
+									</Form.Item>
+
+									<a
+										href="/login"
+									>
+										Войти
+        					</a>
+
+								</Form>
+							</Col>
+						</Row>
+					</Card>
 				</Col>
-
-				<Col>
-
-				</Col>
-
 			</Row>
 		</div>
 	)

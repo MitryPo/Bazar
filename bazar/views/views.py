@@ -1,7 +1,7 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from django.shortcuts import render
-
+from rest_framework.exceptions import NotFound
 
 
 @api_view(['get'])
@@ -26,3 +26,7 @@ def apiOverview(request):
 @api_view(['get'])
 def webIndex(request, *args, **kwargs):
     return render(request, 'index.html')
+
+# @api_view(['get'])
+# def exception_handler(request, exception):
+#     return render(request, '404.html')

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Input, Button, Row, Checkbox, Avatar, Col, Spin, Card, message } from 'antd';
+import { Form, Input, Button, Row, PageHeader, Avatar, Col, Spin, Card, message } from 'antd';
 import axiosInstance from './Parts/axios'
 import { useHistory } from 'react-router-dom';
 import { LockOutlined } from '@ant-design/icons';
@@ -15,15 +15,13 @@ export default function SignIn() {
 
 	const [loading, setLoading] = useState(false)
 	useEffect(() => {
-		setTimeout(() => setLoading(false), 5)
+		setTimeout(() => setLoading(false), 3000)
 	}, [])
 	const handleOk = () => {
 		setLoading({
 			loading: true
 		})
 	}
-
-
 
 	const [formData, updateFormData] = useState(initialFormData)
 	const handlePhoneChange = (e) => {
@@ -56,7 +54,7 @@ export default function SignIn() {
 				console.log(res)
 				console.log(res.data)
 			})
-			.catch(err => message.error('Неверный логин или пароль'))
+			.catch(err => message.error(err))
 	}
 
 	const { Meta } = Card
@@ -66,6 +64,13 @@ export default function SignIn() {
 			className='container'
 			style={{ textAlign: 'center' }}
 		>
+      <PageHeader
+				className="site-page-header"
+				onBack={() => history.push('/')}
+				title="На главную"
+			// subTitle="This is a subtitle"
+			/>
+
 			<Row
 				justify='center'
 				style={{ marginTop: '10%' }}
@@ -93,7 +98,7 @@ export default function SignIn() {
 										<img
 											height={`100%`}
 											width={`100%`}
-											src="https://os.alipayobjects.com/rmsportal/QBnOOoLaAfKPirc.png"
+											src="https://picsum.photos/1080/1200/?blur"
 										/>
 									}
 								/>
@@ -108,14 +113,14 @@ export default function SignIn() {
 
 									<h1
 										style={{ paddingBottom: '2rem' }}
-									>Вход и регистрация
-							</h1>
+									>Вход
+									</h1>
 
 									<Form.Item
 										label="Номер телефона"
 										name="phone"
-										id='phone'
 										onChange={handlePhoneChange}
+										style={{textAlign:'start'}}
 										rules={[
 											{
 												required: true,
@@ -134,7 +139,9 @@ export default function SignIn() {
 
 									<Form.Item
 										label="Пароль"
+										name='password'
 										onChange={handlePasswordChange}
+										style={{marginBottom:0, textAlign: 'start'}}
 										rules={[
 											{
 												required: true,
@@ -146,14 +153,14 @@ export default function SignIn() {
 											prefix={<LockOutlined />}
 											size="large"
 										/>
+									</Form.Item>
+									<Form.Item>
 										<a
 											href=""
 											style={{ float: 'right' }}
-										>
-											Забыли пароль?
-        				</a>
+										>Забыли пароль?
+        						</a>
 									</Form.Item>
-
 									<Form.Item>
 										<Button
 											type="primary"
@@ -170,7 +177,7 @@ export default function SignIn() {
 										href="/registration"
 									>
 										Зарегистрироваться
-        			</a>
+        					</a>
 
 								</Form>
 							</Col>

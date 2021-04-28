@@ -25,7 +25,6 @@ class UserRegistrationView(generics.CreateAPIView):
 
     permission_classes = (AllowAny,)
     serializer_class = UserRegistrationSerializer
-    
 
 
 class UserAuthView(APIView):

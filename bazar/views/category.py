@@ -3,16 +3,25 @@ from bazar.serializers import CategorySerializer
 from rest_framework import generics
 
 
-class CategoryListView(generics.ListAPIView):
+class CategoryList(generics.ListAPIView):
     '''Category List'''
 
     serializer_class = CategorySerializer
-    queryset = Category.objects.all().order_by('id')
+    lookup_field = 'slug'
+    queryset = Category.objects.all().filter(parent=None)
 
 
-class CategoryDetailView(generics.RetrieveAPIView):
+class SubCategoryList(generics.ListAPIView):
+    '''Category List'''
+
+    serializer_class = CategorySerializer
+    lookup_field = 'slug'
+    queryset = Category.objects.all().exclude(parent=None)
+
+
+class CategoryDetail(generics.RetrieveAPIView):
     '''Category Detail View'''
 
     serializer_class = CategorySerializer
     lookup_field = 'slug'
-    queryset = Category.objects.all().order_by('id')
+    queryset = Category.objects.all()

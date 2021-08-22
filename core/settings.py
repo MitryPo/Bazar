@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'pm95jl!82fwnto#avkwy&(q*=7xtm89qxty+x=3-gzy1cxcgpp'
+SECRET_KEY = 'pM95jl!82fWnto#avkwy&(q*=7xtm89Qxty+x=3-gzy1cXcgpp'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -105,9 +105,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.1/topics/i18n/
 
-LANGUAGE_CODE = 'ru-RU'
+LANGUAGE_CODE = 'en'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -122,7 +122,7 @@ USE_TZ = True
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-FIXTURE_DIR = 'D:/Projects/bazar/fixtures'
+FIXTURE_DIR = os.path.join(BASE_DIR, 'fixtures')
 
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [
@@ -135,6 +135,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ),
     # 'EXCEPTION_HANDLER': 'bazar.views.exception_handler',
     # 'DEFAULT_RENDERER_CLASSES': (
@@ -174,6 +177,5 @@ SIMPLE_JWT = {
 AUTH_USER_MODEL = 'bazar.UserProfile'
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:8000",
-    "http://127.0.0.1:8000"
+    "http://localhost:3000"
 ]

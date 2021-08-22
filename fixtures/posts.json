@@ -1,34 +1,42 @@
 [
     {
         "title": "Мерседес",
-        "description":"Новый не бит не кращен"
+        "description":"Новый не бит не кращен",
+        "sold": "False"
     },
     {
         "title": "Наушники",
-        "description":"б/у 1 месяц"
+        "description":"б/у 1 месяц",
+        "sold": "True"
     },
     {
         "title": "Книжки",
-        "description":"Пользовались бережно"
+        "description":"Пользовались бережно",
+        "sold": "False"
     },
     {
         "title": "Стул",
-        "description":"Сидели только чистыми *опами"
+        "description":"Сидели только чистыми *опами",
+        "sold": "False"
     },
     {
         "title": "Продаю дом",
-        "description":"Трехэтажный пентхаус. Еда,вода,гхас все есть "
+        "description":"Трехэтажный пентхаус. Еда,вода,гхас все есть ",
+        "sold": "True"
     },
     {
         "title": "Пианино",
-        "description":"Клацали только чистыми пальцами"
+        "description":"Клацали только чистыми пальцами",
+        "sold": "False"
     },
     {
         "title": "iPhone 12",
-        "description":"Новый не восстановленный даже"
+        "description":"Новый не восстановленный даже",
+        "sold": "True"
     },
     {
         "title": "Macbook Pro",
-        "description":"Ноут вай вах пиу пах"
+        "description":"Ноут вай вах пиу пах",
+        "sold": "False"
     }
 ]

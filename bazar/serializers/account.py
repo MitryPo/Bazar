@@ -10,13 +10,12 @@ class UserProfileSerializer(serializers.ModelSerializer):
         fields = [
             'username',
             'is_online',
-            'balance',
             'phone',
             'date_joined',
         ]
 
 
-class UserRegistrationSerializer(serializers.ModelSerializer):
+class UserRegisterSerializer(serializers.ModelSerializer):
     phone = serializers.CharField()
     password = serializers.CharField(
         max_length=128,
@@ -32,6 +31,7 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
             'password',
             'token'
         ]
+        read_only_fields = ['token',]
 
     def create(self, validated_data):
         return UserProfile.objects.create_user(**validated_data)
@@ -60,14 +60,12 @@ class UserAuthSerializer(serializers.Serializer):
         }
 
 
-class UserRUDSerializer(serializers.ModelSerializer):
+class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserProfile
         fields = [
             'username',
-            'balance',
             'phone',
             'date_joined',
-            # 'favorite_posts'
         ]
-        read_only_fields = ['balance', 'date_joined']
+        read_only_fields = ['date_joined',]

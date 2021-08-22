@@ -1,47 +1,51 @@
-from django.contrib.auth.models import User
 from bazar.models import Post
-from bazar.models.account import UserProfile
-from bazar.serializers import PostListSerializer, PostCRUDSerializer
+from .permissions import UserPermission
+from bazar import serializers
 from rest_framework.authentication import SessionAuthentication, BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
-
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
 
 
-class PostListView(generics.ListAPIView):
+class PostList(generics.ListAPIView):
     '''Post List'''
 
-    filter_backends = (DjangoFilterBackend, SearchFilter)
-    filterset_fields = ['city','category']
-    search_fields = ['$title',]
-    serializer_class = PostListSerializer
+    filter_backends = [DjangoFilterBackend]
+    serializer_class = serializers.PostListSerializer
+    filterset_fields = ['category__slug']
     queryset = Post.objects.all().order_by('-date_created')
 
 
-class PostCreateView(generics.CreateAPIView):
+class MyPostList(generics.ListAPIView):
+    permission_classes = UserPermission
+    serializer_class = serializers.PostListSerializer
+    permission_classes = [IsAuthenticated,]
+
+    def get_queryset(self):
+        return Post.objects.filter(creator=self.request.user.id)
+
+
+class SearchPosts(generics.ListAPIView):
+    serializer_class = serializers.PostListSerializer
+    filter_backends = [SearchFilter,]
+    search_fields = ['$title']
+    queryset = Post.objects.all().order_by('-date_created')
+
+
+class PostCreate(generics.CreateAPIView):
     '''Create Post'''
 
-    serializer_class = PostCRUDSerializer
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
     permission_classes = [IsAuthenticated]
+    serializer_class = serializers.PostCreateSerializer
+    authentication_classes = [SessionAuthentication, BasicAuthentication]
     
 
-class PostCRUDView(generics.RetrieveUpdateDestroyAPIView):
-    '''Post Update/Delete & Detail View (authenticated only)'''
+class PostDetail(generics.RetrieveUpdateDestroyAPIView):
+    '''Post Update/Delete & Detail View'''
 
-    serializer_class = PostCRUDSerializer
-    authentication_classes = [SessionAuthentication, BasicAuthentication]
-    permission_classes = [IsAuthenticated]
+    serializer_class = serializers.PostEditSerializer
+    permission_classes = [UserPermission,]
     lookup_field='slug'
-    queryset = Post.objects.all().order_by('-date_created')
-
-
-class PostDetailView(generics.RetrieveAPIView):
-    '''Post Detail View'''
-
-    serializer_class = PostListSerializer
-    lookup_field='slug'
-    queryset = Post.objects.all().order_by('-date_created')
+    queryset = Post.objects.all()
 

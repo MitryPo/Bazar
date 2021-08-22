@@ -1,6 +1,6 @@
 from time import sleep
 from bazar.models.account import UserProfile
-from bazar.models import Post, City, Category
+from bazar.models import Post, City, Category, UserProfile
 from django.core.management.base import BaseCommand, CommandError
 from core.settings import FIXTURE_DIR, MEDIA_ROOT
 import json, random, glob
@@ -20,10 +20,11 @@ class Command(BaseCommand):
                 post = Post()
                 post.city = City.objects.get(id=random.randint(1,11))
                 post.creator = UserProfile.objects.get(id=1)
-                post.category = Category.objects.get(id=random.randint(1,9))
+                post.category = Category.objects.get(id=random.randint(12,30))
                 post.price = random.randrange(start=150, stop=15000, step=50)
                 post.title = item['title']
                 post.description = item['description']
+                post.sold = item['sold']
                 post.image = random.choice(glob.glob(imagePath))            
                 post.save()
                 print(item)

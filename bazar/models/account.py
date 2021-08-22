@@ -1,11 +1,9 @@
 from uuid import uuid4
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.db import models
-from django.utils.translation import gettext_lazy as _
-from core.settings import SIMPLE_JWT
-from datetime import datetime, timedelta
+from .post import Post
 
-
+        
 class UserManager(BaseUserManager):
 
     def create_user(self, phone, password=None, **kwargs):
@@ -14,6 +12,7 @@ class UserManager(BaseUserManager):
 
         user = self.model(phone=phone, **kwargs)
         user.set_password(password)
+        user.is_active = True
         user.save()
 
         return user
@@ -31,22 +30,16 @@ class UserManager(BaseUserManager):
 
 
 class UserProfile(AbstractBaseUser, PermissionsMixin):
-    phone = models.CharField(
-        verbose_name=_("Phone number"),
-        unique=True,
-        max_length=16)
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
 
-    username = models.CharField(max_length=50, blank=True)
-    balance = models.PositiveIntegerField(
-        verbose_name=_("Balance"),
-        default=0)
-
-    date_joined = models.DateField(
-        default=datetime.utcnow,
-        verbose_name='Join date')
-
-    is_online = models.BooleanField(verbose_name=_("Is online"), default=False)
-    is_staff = models.BooleanField(default=False)
+    phone = models.CharField('Номер телефона', unique=True, max_length=16)
+    username = models.CharField('Имя пользователя', max_length=50)
+    date_joined = models.DateField('Дата создания', auto_now=True)
+    favorite_posts = models.ManyToManyField(Post, verbose_name='Избранное', related_name='users', blank=True)
+    is_online = models.BooleanField('В сети', default=False)
+    is_staff = models.BooleanField('Администратор', default=False)
 
     objects = UserManager()
 

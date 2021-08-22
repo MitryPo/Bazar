@@ -3,7 +3,7 @@ from bazar.serializers import CitySerializer
 from rest_framework import generics
 
 
-class CityListView(generics.ListAPIView):
+class CityList(generics.ListAPIView):
     '''City List'''
 
     serializer_class = CitySerializer
